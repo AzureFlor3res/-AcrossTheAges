@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#182338">
+  <title>Across the Ages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" data-screen="home" aria-label="Across the Ages home"><span class="brand-mark">AA</span><span>Across the Ages</span></button>
+      <div class="top-actions">
+        <span class="connection-status" id="connectionStatus"><i></i> Local play</span>
+        <button class="icon-button" id="soundToggle" aria-label="Toggle sound">🔊</button>
+        <button class="text-button" data-screen="rules">How to play</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="screen active" id="homeScreen">
+        <div class="hero">
+          <div class="eyebrow">A shared adventure for every generation</div>
+          <h1>Across the<br><em>Ages.</em></h1>
+          <p class="hero-copy">A warm, playful board game made for grand stories, unexpected laughs and the people you love.</p>
+          <div class="hero-actions">
+            <button class="primary-button" id="createGameButton">Create a game <span>→</span></button>
+            <button class="secondary-button" id="joinGameButton">Join with a code</button>
+          </div>
+          <button class="link-button" data-screen="rules">Read the rules <span>↗</span></button>
+        </div>
+        <div class="home-art" aria-label="Illustration of two game pawns">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="home-pawn pawn-blue">1</div><div class="home-pawn pawn-coral">2</div>
+          <div class="art-card card-note">Stories<br><strong>shared</strong></div>
+          <div class="art-card card-heart">♥ <strong>3</strong></div>
+        </div>
+      </section>
+
+      <section class="screen narrow-screen" id="setupScreen">
+        <button class="back-link" data-screen="home">← Back</button>
+        <div class="section-heading"><div class="eyebrow">Set up your table</div><h2>How will you play?</h2><p>Choose where the two teams will be playing from.</p></div>
+        <div class="setup-card">
+          <div class="mode-choice-grid">
+            <button class="mode-choice selected" data-mode="same"><span>🫶</span><strong>Same device</strong><small>Pass the screen between teams</small></button>
+            <button class="mode-choice" data-mode="different"><span>🌍</span><strong>Different devices</strong><small>Play remotely with a room code</small></button>
+          </div>
+          <div id="sameDeviceFields">
+            <label>Team 1 name<input id="teamOneInput" value="The Storytellers" maxlength="24"></label>
+            <label>Team 2 name<input id="teamTwoInput" value="The Adventurers" maxlength="24"></label>
+          </div>
+          <div id="differentDeviceFields" hidden>
+            <label>Your team name<input id="hostTeamInput" value="The Storytellers" maxlength="24"></label>
+            <p class="mode-helper">Your teammate will choose their own team name after entering your room code.</p>
+          </div>
+          <div class="room-preview"><span>YOUR ROOM CODE</span><strong id="roomCodePreview">—</strong><small>Share this code with the other player</small></div>
+          <div class="setup-actions"><button class="primary-button" id="copyCodeButton">Copy room code</button><button class="secondary-button" id="lobbyButton">Continue to lobby →</button></div>
+          <p class="helper-text" id="copyMessage" role="status"></p>
+        </div>
+      </section>
+
+      <section class="screen narrow-screen" id="joinScreen">
+        <button class="back-link" data-screen="home">← Back</button>
+        <div class="section-heading"><div class="eyebrow">Join a table</div><h2>Enter the room code</h2><p>Ask the host for the six-character code shown on their screen.</p></div>
+        <div class="setup-card">
+          <label>Room code<input id="joinCodeInput" placeholder="e.g. KQ7M2P" maxlength="6" autocomplete="off"></label>
+          <label>Your team name<input id="joinTeamInput" value="The Newcomers" maxlength="24"></label>
+          <button class="primary-button full-button" id="joinConfirmButton">Join game →</button>
+          <p class="helper-text" id="joinMessage" role="status"></p>
+        </div>
+      </section>
+
+      <section class="screen narrow-screen" id="lobbyScreen">
+        <button class="back-link" data-screen="home">← Leave room</button>
+        <div class="section-heading"><div class="eyebrow">Room <strong id="lobbyCode">—</strong></div><h2>Game lobby</h2><p>Gather your teammate and choose your team names.</p></div>
+        <div class="lobby-card">
+          <div class="lobby-player"><span class="player-avatar blue">1</span><div><strong id="lobbyTeamOne">Team 1</strong><small>Host connected ✓</small></div><span class="ready-pill">READY</span></div>
+          <div class="lobby-player"><span class="player-avatar coral">2</span><div><strong id="lobbyTeamTwo">Team 2</strong><small id="guestStatus">Waiting for the other player…</small></div><span class="ready-pill waiting" id="guestPill">WAITING</span></div>
+          <div class="lobby-note">Playing on one device? You can start right away and pass the screen between teams.</div>
+          <button class="primary-button full-button" id="startGameButton">Start game →</button>
+        </div>
+      </section>
+
+      <section class="screen game-screen" id="gameScreen">
+        <div class="game-header">
+          <div><div class="eyebrow">Room <strong id="gameRoomCode">—</strong></div><h2 id="turnHeading">Team 1’s turn</h2></div>
+          <div class="game-header-actions"><button class="secondary-button small" id="rulesButton">Rules</button><button class="secondary-button small" id="quitButton">Exit</button></div>
+        </div>
+        <div class="team-strip">
+          <div class="team-summary team-one"><span class="team-dot"></span><div><strong id="gameTeamOne">Team 1</strong><small>Team 1</small></div><div class="hearts" id="heartsOne" aria-label="3 hearts">♥♥♥</div></div>
+          <div class="turn-badge"><span class="turn-dot"></span><span id="turnLabel">TEAM 1</span></div>
+          <div class="team-summary team-two"><div class="hearts" id="heartsTwo" aria-label="3 hearts">♥♥♥</div><div><strong id="gameTeamTwo">Team 2</strong><small>Team 2</small></div><span class="team-dot"></span></div>
+        </div>
+        <div class="game-layout">
+          <div class="board-panel">
+            <div class="board-topline"><span class="route-label safe">SAFE ROUTE <small>S1–S30 · longer and steadier</small></span><span class="route-label risk">RISK ROUTE <small>R1–R18 · shorter and bolder</small></span></div>
+            <div class="board" id="board" aria-label="Across the Ages two-route game board"></div>
+          </div>
+          <aside class="control-panel">
+            <div class="route-choice"><span class="eyebrow">Choose your route</span><p id="routeMessage">Pick Safe or Risk before rolling.</p><div><button class="route-choice-button safe-choice selected" data-route="safe">🛡 Safe</button><button class="route-choice-button risk-choice" data-route="risk">⚡ Risk</button></div></div>
+            <div class="deck-rail" aria-label="Card decks">
+              <div class="rail-heading"><span class="eyebrow">Draw a card</span><small>Tap a deck to reveal a prompt</small></div>
+              <div class="deck-row">
+                <button class="deck challenge-deck" data-deck="challenge"><span>❓</span><strong>CHALLENGE</strong><small>One person</small><i>DRAW CARD →</i></button>
+                <button class="deck object-deck" data-deck="object"><span>🧩</span><strong>OBJECT</strong><small>Old vs new</small><i>DRAW CARD →</i></button>
+                <button class="deck team-deck" data-deck="team"><span>❓!</span><strong>TEAM CHALLENGE</strong><small>Everyone joins in</small><i>DRAW CARD →</i></button>
+              </div>
+            </div>
+            <div class="dice-card"><div class="dice-display"><span id="dieOne">?</span><span id="dieTwo">?</span></div><div><span class="eyebrow">Your move · two dice</span><p id="diceMessage">Roll both dice to begin</p></div><div class="dice-total">TOTAL <strong id="diceTotal">—</strong></div><button class="primary-button roll-button" id="rollButton">🎲 🎲 Roll dice</button></div>
+            <div class="activity-card" id="activityCard"><div class="activity-icon">✦</div><div><span class="eyebrow">Next up</span><h3 id="activityTitle">The board is waiting</h3><p id="activityText">Roll the dice and see where your story takes you.</p></div></div>
+            <div class="log-card"><div class="card-heading"><span>Table talk</span><span class="live-dot">● LIVE</span></div><div id="gameLog" class="game-log"><p><b>Welcome!</b> Your shared adventure starts here.</p></div></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen narrow-screen" id="rulesScreen">
+        <button class="back-link" data-screen="home">← Back</button>
+        <div class="section-heading"><div class="eyebrow">Everything you need</div><h2>How to play</h2><p>No studying, no wrong answers — just a reason to talk, laugh and learn something new.</p></div>
+        <div class="rules-grid">
+          <article><b>01</b><h3>Roll & move</h3><p>Teams take turns rolling the dice and moving their pawn along either route. Safe is longer; Risk is shorter and spicier.</p></article>
+          <article><b>02</b><h3>Take the prompt</h3><p>Land on a space to reveal a challenge, object or special action. Complete it together before the next turn.</p></article>
+          <article><b>03</b><h3>Keep your hearts</h3><p>Every team begins with three hearts. Gain and lose lives, but never go above three or below zero.</p></article>
+          <article><b>04</b><h3>Reach the finish</h3><p>Make it to the finish with hearts to win. If a team reaches zero hearts, the other team wins.</p></article>
+        </div>
+        <button class="primary-button" id="rulesStartButton">Start a game →</button>
+      </section>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="modalBackdrop" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" id="modalClose" aria-label="Close">×</button><div id="modalContent"></div></div></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
